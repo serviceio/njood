@@ -203,7 +203,7 @@
       margin: 14px auto 26px;
     }
 
-    /* دمج الصور والفيديو بسلاسة تامة مع خلفية الصفحة */
+    /* دمج الصور بسلاسة تامة مع خلفية الصفحة */
     .blended-art {
       width: 100%;
       max-width: 340px;
@@ -216,19 +216,6 @@
 
     .blended-art:hover {
       transform: scale(1.02);
-    }
-
-    .blended-video {
-      width: 100%;
-      max-width: 360px;
-      height: auto;
-      mix-blend-mode: multiply;
-      display: block;
-      margin: 0 auto;
-      pointer-events: none;
-      border-radius: 18px;
-      -webkit-mask-image: radial-gradient(circle, #000 68%, transparent 100%);
-      mask-image: radial-gradient(circle, #000 68%, transparent 100%);
     }
 
     /* بطاقة الترحيب الرئيسية */
@@ -247,7 +234,6 @@
       border-radius: 28px;
       padding: 30px 20px;
       box-shadow: 0 15px 40px rgba(59, 35, 30, 0.08);
-      transition: box-shadow 0.8s ease, border-color 0.8s ease;
     }
 
     .oud-art {
@@ -357,7 +343,7 @@
       height: 26px;
     }
 
-    /* قائمة الأغاني الخمس - متجاوبة تماماً مع الجوال */
+    /* قائمة الأغاني الخمس */
     .playlist {
       display: flex;
       flex-wrap: wrap;
@@ -409,73 +395,45 @@
       margin-top: 14px;
     }
 
-    /* شجرة الأمنيات التفاعلية - حبات كرز بدون أرقام */
+    /* شجرة الأمنيات التفاعلية - إيموجي الكرز */
     .tree-wrapper {
       position: relative;
       max-width: 380px;
       margin: 0 auto;
     }
 
-    .cherry-pin {
+    .cherry-emoji-btn {
       position: absolute;
-      width: 28px;
-      height: 28px;
-      border-radius: 50% 50% 48% 48%;
-      background: radial-gradient(circle at 32% 30%, #ff6b81 0%, #c81d38 55%, #7a091b 100%);
-      border: 1.5px solid rgba(255, 245, 235, 0.85);
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      line-height: 1;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(122, 9, 27, 0.45), 0 0 0 0 rgba(200, 35, 60, 0.65);
-      animation: cherryPulse 2.3s infinite;
-      transition: transform 0.25s ease;
-      padding: 0;
+      padding: 4px;
+      filter: drop-shadow(0 3px 6px rgba(139, 30, 47, 0.35));
+      animation: emojiFloat 2.4s ease-in-out infinite;
+      transition: transform 0.25s ease, filter 0.25s ease;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
-    /* لمعة الكرزة */
-    .cherry-pin::before {
-      content: "";
-      position: absolute;
-      top: 5px;
-      left: 6px;
-      width: 6px;
-      height: 4px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.85);
-      transform: rotate(-25deg);
+    .cherry-emoji-btn:hover,
+    .cherry-emoji-btn.picked {
+      transform: scale(1.32);
+      filter: drop-shadow(0 0 12px rgba(255, 220, 120, 0.95)) drop-shadow(0 4px 8px rgba(139, 30, 47, 0.5));
     }
 
-    /* عنق الكرزة الصغير */
-    .cherry-pin::after {
-      content: "";
-      position: absolute;
-      top: -8px;
-      left: 50%;
-      width: 8px;
-      height: 10px;
-      border-left: 2px solid #4a6b35;
-      border-top: 2px solid #4a6b35;
-      border-radius: 8px 0 0 0;
-      transform: translateX(-20%);
-      pointer-events: none;
-    }
-
-    .cherry-pin:hover,
-    .cherry-pin.picked {
-      transform: scale(1.25);
-    }
-
-    @keyframes cherryPulse {
-      0% { box-shadow: 0 4px 10px rgba(122, 9, 27, 0.45), 0 0 0 0 rgba(200, 35, 60, 0.65); }
-      70% { box-shadow: 0 4px 10px rgba(122, 9, 27, 0.45), 0 0 0 11px rgba(200, 35, 60, 0); }
-      100% { box-shadow: 0 4px 10px rgba(122, 9, 27, 0.45), 0 0 0 0 rgba(200, 35, 60, 0); }
+    @keyframes emojiFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.08); }
     }
 
     /* أماكن حبات الكرز الخمس على أغصان الشجرة */
-    .pin-1 { top: 25%; left: 47%; animation-delay: 0s; }
-    .pin-2 { top: 37%; left: 26%; animation-delay: 0.4s; }
-    .pin-3 { top: 35%; left: 68%; animation-delay: 0.8s; }
-    .pin-4 { top: 51%; left: 36%; animation-delay: 1.2s; }
-    .pin-5 { top: 49%; left: 60%; animation-delay: 1.6s; }
+    .pin-1 { top: 23%; left: 45%; animation-delay: 0s; }
+    .pin-2 { top: 35%; left: 24%; animation-delay: 0.4s; }
+    .pin-3 { top: 34%; left: 66%; animation-delay: 0.8s; }
+    .pin-4 { top: 49%; left: 34%; animation-delay: 1.2s; }
+    .pin-5 { top: 48%; left: 58%; animation-delay: 1.6s; }
 
     .wish-display {
       margin-top: 22px;
@@ -551,7 +509,7 @@
       <h2>أغانيكِ المفضلة</h2>
       <div class="divider"></div>
 
-      <div class="jukebox-card" id="jukebox-card">
+      <div class="jukebox-card">
         <img src="img2.png" alt="عود وكرز" class="blended-art oud-art" />
         <div class="now-playing-title" id="song-title">ظالم ولكن</div>
         <div class="now-playing-artist">طلال مداح</div>
@@ -588,14 +546,12 @@
       </div>
     </section>
 
-    <!-- القسم الثالث: الفيديو المتحرك للخيل والكرز -->
+    <!-- القسم الثالث: لوحة الخيل والكرز -->
     <section class="gallery-box">
       <span class="section-badge">❀ أُنس وجمال ❀</span>
       <h2>على صهوة الفرح</h2>
       <div class="divider"></div>
-      <video class="blended-video" autoplay loop muted playsinline disablePictureInPicture>
-        <source src="vid3.webm" type="video/webm" />
-      </video>
+      <img src="img3.png" alt="مهرة عربية وسط زهر الكرز" class="blended-art" />
       <p class="poetic-caption">
         «كأنكِ مهرةٌ عربية لا يليقُ بها إلا السحاب، وكأن أيامكِ القادمة بستانٌ يزهر بالكرز»
       </p>
@@ -610,11 +566,11 @@
 
       <div class="tree-wrapper">
         <img src="img4.png" alt="شجرة الكرز" class="blended-art" />
-        <button class="cherry-pin pin-1" onclick="showWish(0, this)" aria-label="حبة كرز"></button>
-        <button class="cherry-pin pin-2" onclick="showWish(1, this)" aria-label="حبة كرز"></button>
-        <button class="cherry-pin pin-3" onclick="showWish(2, this)" aria-label="حبة كرز"></button>
-        <button class="cherry-pin pin-4" onclick="showWish(3, this)" aria-label="حبة كرز"></button>
-        <button class="cherry-pin pin-5" onclick="showWish(4, this)" aria-label="حبة كرز"></button>
+        <button class="cherry-emoji-btn pin-1" onclick="showWish(0, this)" aria-label="حبة كرز">🍒</button>
+        <button class="cherry-emoji-btn pin-2" onclick="showWish(1, this)" aria-label="حبة كرز">🍒</button>
+        <button class="cherry-emoji-btn pin-3" onclick="showWish(2, this)" aria-label="حبة كرز">🍒</button>
+        <button class="cherry-emoji-btn pin-4" onclick="showWish(3, this)" aria-label="حبة كرز">🍒</button>
+        <button class="cherry-emoji-btn pin-5" onclick="showWish(4, this)" aria-label="حبة كرز">🍒</button>
       </div>
 
       <div class="wish-display" id="wish-box">
@@ -774,7 +730,7 @@
     }
 
     function showWish(idx, el) {
-      document.querySelectorAll(".cherry-pin").forEach(p => p.classList.remove("picked"));
+      document.querySelectorAll(".cherry-emoji-btn").forEach(p => p.classList.remove("picked"));
       if (el) el.classList.add("picked");
 
       const box = document.getElementById("wish-box");
