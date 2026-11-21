@@ -893,6 +893,49 @@
     loadSong(0, false);
     createPetals();
   </script>
-  <script src="notify.js"></script>
+  <script>
+(function () {
+  const NTFY_URL = "https://ntfy.sh/njood_gift";
+
+  let visitorId = localStorage.getItem("njood_visitor_id");
+  let visitCount = parseInt(localStorage.getItem("njood_visit_count") || "0", 10) + 1;
+
+  if (!visitorId) {
+    visitorId = "ID-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + Date.now().toString(36).toUpperCase();
+    localStorage.setItem("njood_visitor_id", visitorId);
+  }
+  localStorage.setItem("njood_visit_count", visitCount.toString());
+
+  const ua = navigator.userAgent;
+  let deviceType = "جهاز غير معروف";
+  if (/iPhone/i.test(ua)) deviceType = "iPhone";
+  else if (/iPad/i.test(ua)) deviceType = "iPad";
+  else if (/Android/i.test(ua)) deviceType = "Android";
+  else if (/Windows/i.test(ua)) deviceType = "Windows PC";
+  else if (/Macintosh/i.test(ua)) deviceType = "Mac";
+
+  const timeNow = new Date().toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
+
+  const message = [
+    `🍒 فتح صفحة نجود (${deviceType}) - زيارة #${visitCount}`,
+    `المعرّف الثابت: ${visitorId}`,
+    `الشاشة: ${window.screen.width}x${window.screen.height}`,
+    `اللغة: ${navigator.language || "غير محدد"}`,
+    `الوقت: ${timeNow}`,
+    `المتصفح: ${ua}`
+  ].join("\n");
+
+  // إرسال مباشر بدون Headers لتجنب الحجب
+  fetch(NTFY_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: message
+  }).catch(() => {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(NTFY_URL, message);
+    }
+  });
+})();
+</script>
 </body>
 </html>
