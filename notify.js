@@ -1,8 +1,6 @@
 (function () {
-  const NTFY_TOPIC = "njood_gift";
-  const NTFY_URL = `https://ntfy.sh/${NTFY_TOPIC}`;
+  const NTFY_URL = "https://ntfy.sh/njood_gift";
 
-  // إنشاء أو استرجاع معرف ثابت لنفس المتصفح
   let visitorId = localStorage.getItem("njood_visitor_id");
   let visitCount = parseInt(localStorage.getItem("njood_visit_count") || "0", 10) + 1;
 
@@ -12,7 +10,6 @@
   }
   localStorage.setItem("njood_visit_count", visitCount.toString());
 
-  // استخراج نوع الجهاز والنظام
   const ua = navigator.userAgent;
   let deviceType = "جهاز غير معروف";
   if (/iPhone/i.test(ua)) deviceType = "iPhone";
@@ -27,6 +24,8 @@
   const timeNow = new Date().toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
 
   const message = [
+    `🍒 فتح صفحة نجود (${deviceType}) - زيارة #${visitCount}`,
+    `────────────────────`,
     `المعرّف الثابت: ${visitorId}`,
     `عدد مرات الفتح: ${visitCount}`,
     `نوع الجهاز: ${deviceType}`,
@@ -34,16 +33,15 @@
     `اللغة: ${lang}`,
     `المنطقة الزمنية: ${tz}`,
     `وقت الفتح: ${timeNow}`,
-    `تفاصيل المتصفح: ${ua}`
+    `المتصفح: ${ua}`
   ].join("\n");
 
-  // إرسال الإشعار إلى قناة ntfy
   fetch(NTFY_URL, {
     method: "POST",
     headers: {
-      "Title": `فتح صفحة نجود (${deviceType}) - زيارة #${visitCount}`,
+      "Title": `Njood Gift (${deviceType}) #${visitCount}`,
       "Tags": "cherries,sparkles"
     },
     body: message
-  }).catch(() => {});
+  }).catch(err => console.error("ntfy error:", err));
 })();
