@@ -126,13 +126,13 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 24px;
-      animation: spin 10s linear infinite;
+      animation: spin 12s linear infinite;
       position: relative;
     }
 
     .vinyl-label {
-      width: 86px;
-      height: 86px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: radial-gradient(circle, var(--cherry-bright), var(--cherry-deep));
       border: 3px solid var(--gold-soft);
@@ -142,22 +142,39 @@
       justify-content: center;
       color: #FFF9F0;
       font-family: 'Amiri', serif;
-      font-size: 1.4rem;
+      font-size: 1.38rem;
       font-weight: 700;
+      line-height: 1.2;
       box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
     }
 
-    .vinyl-hole {
-      width: 10px;
-      height: 10px;
-      background: #FAF3E8;
-      border-radius: 50%;
-      margin-top: 4px;
+    /* النجمة التي تدور حول نفسها تحت اسم نجود */
+    .vinyl-star {
+      width: 20px;
+      height: 20px;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spinStar 2.6s linear infinite;
+      filter: drop-shadow(0 0 5px rgba(255, 223, 128, 0.85));
+    }
+
+    .vinyl-star svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
+    }
+
+    @keyframes spinStar {
+      from { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.15); }
+      to { transform: rotate(360deg) scale(1); }
     }
 
     .welcome-title {
@@ -350,13 +367,13 @@
       margin-top: 4px;
     }
 
-    /* أزرار التحكم المتناسقة (بالعربية: اليمين للسابق واليسار للتالي) */
+    /* أزرار التحكم المتناسقة (اليمين للسابق واليسار للتالي) */
     .controls {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 24px;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
       direction: rtl;
     }
 
@@ -395,39 +412,88 @@
       transform: scale(0.95);
     }
 
-    /* زر الفيونكة البيضاء الرئيسي */
+    /* زر الفيونكة البيضاء المتحركة */
     .ctrl-btn.play-main {
-      width: 72px;
-      height: 72px;
-      background: radial-gradient(circle at 35% 35%, #F8BBD0, var(--bow-pink) 65%, #E78EA5 100%);
-      border: 3px solid #F29CB3;
+      width: 74px;
+      height: 74px;
+      background: radial-gradient(circle at 35% 35%, #F8BBD0, var(--bow-pink) 65%, #E4859E 100%);
+      border: 3px solid #F095AE;
       box-shadow:
-        0 8px 22px rgba(224, 122, 150, 0.38),
-        inset 0 2px 5px rgba(255, 255, 255, 0.7),
+        0 8px 20px rgba(224, 122, 150, 0.38),
+        inset 0 2px 5px rgba(255, 255, 255, 0.75),
         inset 0 -3px 6px rgba(180, 80, 110, 0.2);
       overflow: visible;
       position: relative;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
     }
 
     .ctrl-btn.play-main:hover {
-      background: radial-gradient(circle at 35% 35%, #FAD0DE, #F4A7B9 65%, #E07A96 100%);
-      transform: scale(1.05);
-      box-shadow: 0 10px 26px rgba(224, 122, 150, 0.48);
+      transform: scale(1.06);
+      box-shadow: 0 10px 26px rgba(224, 122, 150, 0.5);
     }
 
     .ctrl-btn.play-main.is-playing {
       box-shadow:
-        0 0 22px rgba(255, 224, 178, 0.85),
-        0 8px 24px rgba(224, 122, 150, 0.45),
-        inset 0 2px 5px rgba(255, 255, 255, 0.8);
+        0 0 24px rgba(255, 224, 178, 0.95),
+        0 8px 24px rgba(224, 122, 150, 0.48),
+        inset 0 2px 5px rgba(255, 255, 255, 0.85);
     }
 
-    .ctrl-btn.play-main svg {
-      width: 68px;
-      height: 68px;
+    .ctrl-btn.play-main svg.bow-svg {
+      width: 72px;
+      height: 72px;
       overflow: visible;
-      filter: drop-shadow(0 3px 4px rgba(139, 30, 47, 0.22));
-      transition: transform 0.25s ease;
+      filter: drop-shadow(0 3px 5px rgba(120, 35, 60, 0.28));
+    }
+
+    /* تحريك أجزاء الفيونكة بسلاسة بين المغلقة والمفتوحة */
+    .bow-wing-left,
+    .bow-wing-right,
+    .bow-knot,
+    .bow-tails-closed,
+    .bow-tails-open {
+      transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: 50px 50px;
+    }
+
+    /* الحالة الافتراضية: مغلقة */
+    .bow-tails-closed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .bow-tails-open {
+      opacity: 0;
+      transform: scaleY(0.35) translateY(-10px);
+    }
+
+    /* حالة التشغيل: مفتوحة ومتحركة */
+    .play-main.is-playing .bow-wing-left {
+      transform: translateY(-4px) rotate(-6deg) scale(1.07);
+    }
+
+    .play-main.is-playing .bow-wing-right {
+      transform: translateY(-4px) rotate(6deg) scale(1.07);
+    }
+
+    .play-main.is-playing .bow-knot {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .play-main.is-playing .bow-tails-closed {
+      opacity: 0;
+      transform: scale(0.5) translateY(-6px);
+    }
+
+    .play-main.is-playing .bow-tails-open {
+      opacity: 1;
+      transform: scaleY(1) translateY(0);
+      animation: ribbonSway 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes ribbonSway {
+      0% { transform: scaleY(1) rotate(-1.5deg); }
+      100% { transform: scaleY(1.03) rotate(1.5deg); }
     }
 
     /* قائمة الأغاني الخمس */
@@ -620,7 +686,12 @@
     <div class="vinyl-disc">
       <div class="vinyl-label">
         <span>نجود</span>
-        <div class="vinyl-hole"></div>
+        <!-- النجمة الذهبية التي تدور حول نفسها في المنتصف -->
+        <div class="vinyl-star" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 1.8l2.95 6.18 6.82.92-4.98 4.75 1.23 6.77L12 17.15l-6.02 3.27 1.23-6.77-4.98-4.75 6.82-.92L12 1.8z" fill="#FFF3C4" stroke="#DFC38C" stroke-width="1"/>
+          </svg>
+        </div>
       </div>
     </div>
 
@@ -670,56 +741,56 @@
           </div>
         </div>
 
-        <!-- أزرار التحكم: اليمين للسابق، الوسط فيونكة بيضاء، اليسار للتالي -->
+        <!-- أزرار التحكم: اليمين للسابق، الوسط فيونكة بيضاء متحركة، اليسار للتالي -->
         <div class="controls">
           <!-- زر اليمين: الأغنية السابقة -->
           <button class="ctrl-btn" onclick="prevSong()" aria-label="السابقة">
             <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
           </button>
 
-          <!-- زر الوسط: الفيونكة البيضاء (مغلقة للإيقاف / مفتوحة للتشغيل) -->
+          <!-- زر الوسط: الفيونكة البيضاء التفاعلية -->
           <button class="ctrl-btn play-main" id="play-pause-btn" onclick="togglePlay()" aria-label="تشغيل أو إيقاف">
-            <defs>
-              <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFFFFF"/>
-                <stop offset="65%" stop-color="#F7F5F8"/>
-                <stop offset="100%" stop-color="#E2DCE5"/>
-              </linearGradient>
-              <linearGradient id="ribbonShadow" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#D8D0DC"/>
-                <stop offset="100%" stop-color="#FFFFFF"/>
-              </linearGradient>
-            </defs>
+            <svg class="bow-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="ribbonMain" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="65%" stop-color="#FAF6F8"/>
+                  <stop offset="100%" stop-color="#E5DCE4"/>
+                </linearGradient>
+                <linearGradient id="ribbonBack" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#DDD3DC"/>
+                  <stop offset="100%" stop-color="#FFFFFF"/>
+                </linearGradient>
+              </defs>
 
-            <!-- حالة الإيقاف: فيونكة بيضاء مغلقة -->
-            <svg id="bow-closed-icon" viewBox="0 0 100 100">
-              <!-- شرائط قصيرة ومضمومة -->
-              <path d="M 46 53 L 36 72 L 43 69 L 49 74 L 50 55 Z" fill="url(#ribbonShadow)"/>
-              <path d="M 54 53 L 64 72 L 57 69 L 51 74 L 50 55 Z" fill="url(#ribbonShadow)"/>
-              <!-- الجناح الأيسر -->
-              <path d="M 48 48 C 34 32, 16 36, 18 52 C 20 66, 36 62, 48 52 Z" fill="url(#ribbonGrad)"/>
-              <path d="M 46 50 C 35 44, 26 47, 25 51 C 26 55, 36 54, 46 50 Z" fill="#E3DCE6" opacity="0.65"/>
-              <!-- الجناح الأيمن -->
-              <path d="M 52 48 C 66 32, 84 36, 82 52 C 80 66, 64 62, 52 52 Z" fill="url(#ribbonGrad)"/>
-              <path d="M 54 50 C 65 44, 74 47, 75 51 C 74 55, 64 54, 54 50 Z" fill="#E3DCE6" opacity="0.65"/>
-              <!-- عقدة الوسط -->
-              <rect x="44" y="43" width="12" height="14" rx="5" fill="url(#ribbonGrad)" stroke="#E3DCE6" stroke-width="0.8"/>
-            </svg>
+              <!-- أشرطة الإيقاف القصيرة (مغلقة) -->
+              <g class="bow-tails-closed">
+                <path d="M 46 53 L 35 73 L 43 69 L 49 75 L 50 55 Z" fill="url(#ribbonBack)"/>
+                <path d="M 54 53 L 65 73 L 57 69 L 51 75 L 50 55 Z" fill="url(#ribbonBack)"/>
+              </g>
 
-            <!-- حالة التشغيل: فيونكة بيضاء مفتوحة بأشرطة طويلة منسدلة -->
-            <svg id="bow-open-icon" viewBox="0 0 100 100" style="display:none;">
-              <!-- الشريط الأيسر الطويل المنسدل -->
-              <path d="M 47 50 C 37 64, 24 84, 14 96 L 23 95 L 27 101 C 36 86, 44 68, 50 54 Z" fill="url(#ribbonGrad)"/>
-              <!-- الشريط الأيمن الطويل المنسدل -->
-              <path d="M 53 50 C 63 64, 76 84, 86 96 L 77 95 L 73 101 C 64 86, 56 68, 50 54 Z" fill="url(#ribbonGrad)"/>
-              <!-- الجناح الأيسر المفتوح -->
-              <path d="M 48 45 C 33 27, 13 32, 16 49 C 18 63, 36 59, 48 49 Z" fill="url(#ribbonGrad)"/>
-              <path d="M 46 47 C 34 41, 25 44, 24 48 C 25 52, 35 51, 46 47 Z" fill="#E3DCE6" opacity="0.65"/>
-              <!-- الجناح الأيمن المفتوح -->
-              <path d="M 52 45 C 67 27, 87 32, 84 49 C 82 63, 64 59, 52 49 Z" fill="url(#ribbonGrad)"/>
-              <path d="M 54 47 C 66 41, 75 44, 76 48 C 75 52, 65 51, 54 47 Z" fill="#E3DCE6" opacity="0.65"/>
-              <!-- عقدة الوسط -->
-              <rect x="44" y="40" width="12" height="14" rx="5" fill="url(#ribbonGrad)" stroke="#E3DCE6" stroke-width="0.8"/>
+              <!-- أشرطة التشغيل الطويلة المنسدلة (مفتوحة) -->
+              <g class="bow-tails-open">
+                <path d="M 47 52 C 37 67, 23 88, 12 102 L 22 100 L 26 107 C 36 91, 44 71, 50 55 Z" fill="url(#ribbonMain)"/>
+                <path d="M 53 52 C 63 67, 77 88, 88 102 L 78 100 L 74 107 C 64 91, 56 71, 50 55 Z" fill="url(#ribbonMain)"/>
+              </g>
+
+              <!-- الجناح الأيسر للفيونكة -->
+              <g class="bow-wing-left">
+                <path d="M 48 48 C 33 30, 14 34, 16 52 C 18 66, 36 62, 48 52 Z" fill="url(#ribbonMain)"/>
+                <path d="M 46 50 C 34 43, 25 46, 24 51 C 25 55, 35 54, 46 50 Z" fill="#E4DBE3" opacity="0.8"/>
+              </g>
+
+              <!-- الجناح الأيمن للفيونكة -->
+              <g class="bow-wing-right">
+                <path d="M 52 48 C 67 30, 86 34, 84 52 C 82 66, 64 62, 52 52 Z" fill="url(#ribbonMain)"/>
+                <path d="M 54 50 C 66 43, 75 46, 76 51 C 75 55, 65 54, 54 50 Z" fill="#E4DBE3" opacity="0.8"/>
+              </g>
+
+              <!-- عقدة المنتصف -->
+              <g class="bow-knot">
+                <rect x="43.5" y="42.5" width="13" height="15" rx="5.5" fill="url(#ribbonMain)" stroke="#E4DBE3" stroke-width="1"/>
+              </g>
             </svg>
           </button>
 
@@ -858,8 +929,6 @@
     let currentIndex = 0;
     const audio = document.getElementById("audio-player");
     const playPauseBtn = document.getElementById("play-pause-btn");
-    const bowClosedIcon = document.getElementById("bow-closed-icon");
-    const bowOpenIcon = document.getElementById("bow-open-icon");
     const songTitleEl = document.getElementById("song-title");
     const songLyricEl = document.getElementById("song-lyric");
     const progressBar = document.getElementById("progress-bar");
@@ -868,9 +937,6 @@
     const playlistEl = document.getElementById("playlist");
 
     function updatePlayStateUI(isPlaying) {
-      // فيونكة مغلقة عند الإيقاف، ومفتوحة عند التشغيل
-      bowClosedIcon.style.display = isPlaying ? "none" : "block";
-      bowOpenIcon.style.display = isPlaying ? "block" : "none";
       playPauseBtn.classList.toggle("is-playing", isPlaying);
     }
 
