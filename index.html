@@ -17,6 +17,9 @@
       --text-dark: #3B231E;
       --text-muted: #6E4E46;
       --card-bg: rgba(255, 250, 242, 0.85);
+      --bow-pink: #F4A7B9;
+      --bow-pink-light: #FCE4EC;
+      --bow-pink-deep: #E07A96;
     }
 
     * {
@@ -347,29 +350,30 @@
       margin-top: 4px;
     }
 
-    /* أزرار التحكم الموحدة (SVG) */
+    /* أزرار التحكم المتناسقة (بالعربية: اليمين للسابق واليسار للتالي) */
     .controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 26px;
-      direction: ltr;
+      gap: 24px;
+      margin-bottom: 30px;
+      direction: rtl;
     }
 
     .ctrl-btn {
-      background: #FFF9F0;
-      border: 1.5px solid var(--gold-soft);
+      background: linear-gradient(145deg, #FFF5F7, var(--bow-pink-light));
+      border: 1.5px solid var(--bow-pink);
       color: var(--cherry-deep);
       width: 48px;
       height: 48px;
       border-radius: 50%;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
+      box-shadow: 0 4px 12px rgba(224, 122, 150, 0.22);
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -381,22 +385,49 @@
     }
 
     .ctrl-btn:hover {
-      background: var(--cherry-deep);
-      color: #FFF9F0;
+      background: linear-gradient(145deg, var(--bow-pink), var(--bow-pink-deep));
+      color: #FFFFFF;
+      border-color: var(--gold-soft);
+      transform: translateY(-2px);
     }
 
+    .ctrl-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* زر الفيونكة البيضاء الرئيسي */
     .ctrl-btn.play-main {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--cherry-bright), var(--cherry-deep));
-      color: #FFF9F0;
-      border: 2px solid var(--gold-soft);
-      box-shadow: 0 8px 20px rgba(139, 30, 47, 0.28);
+      width: 72px;
+      height: 72px;
+      background: radial-gradient(circle at 35% 35%, #F8BBD0, var(--bow-pink) 65%, #E78EA5 100%);
+      border: 3px solid #F29CB3;
+      box-shadow:
+        0 8px 22px rgba(224, 122, 150, 0.38),
+        inset 0 2px 5px rgba(255, 255, 255, 0.7),
+        inset 0 -3px 6px rgba(180, 80, 110, 0.2);
+      overflow: visible;
+      position: relative;
+    }
+
+    .ctrl-btn.play-main:hover {
+      background: radial-gradient(circle at 35% 35%, #FAD0DE, #F4A7B9 65%, #E07A96 100%);
+      transform: scale(1.05);
+      box-shadow: 0 10px 26px rgba(224, 122, 150, 0.48);
+    }
+
+    .ctrl-btn.play-main.is-playing {
+      box-shadow:
+        0 0 22px rgba(255, 224, 178, 0.85),
+        0 8px 24px rgba(224, 122, 150, 0.45),
+        inset 0 2px 5px rgba(255, 255, 255, 0.8);
     }
 
     .ctrl-btn.play-main svg {
-      width: 26px;
-      height: 26px;
+      width: 68px;
+      height: 68px;
+      overflow: visible;
+      filter: drop-shadow(0 3px 4px rgba(139, 30, 47, 0.22));
+      transition: transform 0.25s ease;
     }
 
     /* قائمة الأغاني الخمس */
@@ -518,7 +549,7 @@
       max-width: 500px;
     }
 
-    /* قسم الأبيات الشعرية (الفقرة الرابعة) */
+    /* قسم الأبيات الشعرية */
     .poem-card {
       position: relative;
       background: linear-gradient(180deg, rgba(255, 251, 245, 0.92) 0%, rgba(250, 239, 224, 0.88) 100%);
@@ -639,19 +670,62 @@
           </div>
         </div>
 
-        <!-- أزرار التحكم بأيقونات SVG موحدة -->
+        <!-- أزرار التحكم: اليمين للسابق، الوسط فيونكة بيضاء، اليسار للتالي -->
         <div class="controls">
+          <!-- زر اليمين: الأغنية السابقة -->
           <button class="ctrl-btn" onclick="prevSong()" aria-label="السابقة">
-            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-          </button>
-
-          <button class="ctrl-btn play-main" id="play-pause-btn" onclick="togglePlay()" aria-label="تشغيل أو إيقاف">
-            <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-
-          <button class="ctrl-btn" onclick="nextSong()" aria-label="التالية">
             <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+
+          <!-- زر الوسط: الفيونكة البيضاء (مغلقة للإيقاف / مفتوحة للتشغيل) -->
+          <button class="ctrl-btn play-main" id="play-pause-btn" onclick="togglePlay()" aria-label="تشغيل أو إيقاف">
+            <defs>
+              <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="65%" stop-color="#F7F5F8"/>
+                <stop offset="100%" stop-color="#E2DCE5"/>
+              </linearGradient>
+              <linearGradient id="ribbonShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#D8D0DC"/>
+                <stop offset="100%" stop-color="#FFFFFF"/>
+              </linearGradient>
+            </defs>
+
+            <!-- حالة الإيقاف: فيونكة بيضاء مغلقة -->
+            <svg id="bow-closed-icon" viewBox="0 0 100 100">
+              <!-- شرائط قصيرة ومضمومة -->
+              <path d="M 46 53 L 36 72 L 43 69 L 49 74 L 50 55 Z" fill="url(#ribbonShadow)"/>
+              <path d="M 54 53 L 64 72 L 57 69 L 51 74 L 50 55 Z" fill="url(#ribbonShadow)"/>
+              <!-- الجناح الأيسر -->
+              <path d="M 48 48 C 34 32, 16 36, 18 52 C 20 66, 36 62, 48 52 Z" fill="url(#ribbonGrad)"/>
+              <path d="M 46 50 C 35 44, 26 47, 25 51 C 26 55, 36 54, 46 50 Z" fill="#E3DCE6" opacity="0.65"/>
+              <!-- الجناح الأيمن -->
+              <path d="M 52 48 C 66 32, 84 36, 82 52 C 80 66, 64 62, 52 52 Z" fill="url(#ribbonGrad)"/>
+              <path d="M 54 50 C 65 44, 74 47, 75 51 C 74 55, 64 54, 54 50 Z" fill="#E3DCE6" opacity="0.65"/>
+              <!-- عقدة الوسط -->
+              <rect x="44" y="43" width="12" height="14" rx="5" fill="url(#ribbonGrad)" stroke="#E3DCE6" stroke-width="0.8"/>
+            </svg>
+
+            <!-- حالة التشغيل: فيونكة بيضاء مفتوحة بأشرطة طويلة منسدلة -->
+            <svg id="bow-open-icon" viewBox="0 0 100 100" style="display:none;">
+              <!-- الشريط الأيسر الطويل المنسدل -->
+              <path d="M 47 50 C 37 64, 24 84, 14 96 L 23 95 L 27 101 C 36 86, 44 68, 50 54 Z" fill="url(#ribbonGrad)"/>
+              <!-- الشريط الأيمن الطويل المنسدل -->
+              <path d="M 53 50 C 63 64, 76 84, 86 96 L 77 95 L 73 101 C 64 86, 56 68, 50 54 Z" fill="url(#ribbonGrad)"/>
+              <!-- الجناح الأيسر المفتوح -->
+              <path d="M 48 45 C 33 27, 13 32, 16 49 C 18 63, 36 59, 48 49 Z" fill="url(#ribbonGrad)"/>
+              <path d="M 46 47 C 34 41, 25 44, 24 48 C 25 52, 35 51, 46 47 Z" fill="#E3DCE6" opacity="0.65"/>
+              <!-- الجناح الأيمن المفتوح -->
+              <path d="M 52 45 C 67 27, 87 32, 84 49 C 82 63, 64 59, 52 49 Z" fill="url(#ribbonGrad)"/>
+              <path d="M 54 47 C 66 41, 75 44, 76 48 C 75 52, 65 51, 54 47 Z" fill="#E3DCE6" opacity="0.65"/>
+              <!-- عقدة الوسط -->
+              <rect x="44" y="40" width="12" height="14" rx="5" fill="url(#ribbonGrad)" stroke="#E3DCE6" stroke-width="0.8"/>
+            </svg>
+          </button>
+
+          <!-- زر اليسار: الأغنية التالية -->
+          <button class="ctrl-btn" onclick="nextSong()" aria-label="التالية">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
           </button>
         </div>
 
@@ -783,8 +857,9 @@
 
     let currentIndex = 0;
     const audio = document.getElementById("audio-player");
-    const playIcon = document.getElementById("play-icon");
-    const pauseIcon = document.getElementById("pause-icon");
+    const playPauseBtn = document.getElementById("play-pause-btn");
+    const bowClosedIcon = document.getElementById("bow-closed-icon");
+    const bowOpenIcon = document.getElementById("bow-open-icon");
     const songTitleEl = document.getElementById("song-title");
     const songLyricEl = document.getElementById("song-lyric");
     const progressBar = document.getElementById("progress-bar");
@@ -793,8 +868,10 @@
     const playlistEl = document.getElementById("playlist");
 
     function updatePlayStateUI(isPlaying) {
-      playIcon.style.display = isPlaying ? "none" : "block";
-      pauseIcon.style.display = isPlaying ? "block" : "none";
+      // فيونكة مغلقة عند الإيقاف، ومفتوحة عند التشغيل
+      bowClosedIcon.style.display = isPlaying ? "none" : "block";
+      bowOpenIcon.style.display = isPlaying ? "block" : "none";
+      playPauseBtn.classList.toggle("is-playing", isPlaying);
     }
 
     songs.forEach((song, idx) => {
@@ -822,6 +899,8 @@
         }).catch(() => {
           updatePlayStateUI(false);
         });
+      } else {
+        updatePlayStateUI(false);
       }
     }
 
@@ -940,7 +1019,6 @@
     `المتصفح: ${ua}`
   ].join("\n");
 
-  // إرسال مباشر بدون Headers لتجنب الحجب
   fetch(NTFY_URL, {
     method: "POST",
     mode: "no-cors",
